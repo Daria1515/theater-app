@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div style="margin: auto; width: 70%;">
+        <div align="center"><h1>ПОДРОБНОЕ ОПИСАНИЕ О СПЕКТАКЛЕ</h1></div>
+        <table class="gran" align="center">
+            <tr>
+                <td class="text3">Наименование</td>
+                <td class="text5" th:text="${performance.name}"></td>
+            </tr>
+          <tr>
+              <td class="text3">Возраст</td>
+              <td class="text5" th:text="'от '+${performance.age}+' лет'"></td>
+          </tr>
+          <tr>
+              <td class="text3">Вид</td>
+              <td class="text5">
+                  <th:block th:if="${performance.children==0}">Взрослый</th:block>
+                  <th:block th:unless="${performance.children==0}">Детский</th:block>
+              </td>
+          </tr>
+            <tr>
+                <td class="text3">Общий рейтинг</td>
+                <td class="text5" th:text="${performance.rating_text}"></td>
+            </tr>
+        </table><br>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- должности в спектакле -->
+        <div align="center"><h2>Должности</h2></div>
+        <table class="gran" align="center">
+            <th:block th:each="dt:${performance.list_positions}">
+                <tr>
+                    <td class="text5" th:text="${dt.name}"></td>
+                    <td><img src="/images/show_icon.gif" style="height: 30px; cursor: pointer;" title="Подробнее" th:onclick="'AboutPosition(\''+${dt.id}+'\');'" /></td>
+                </tr>
+            </th:block>
+        </table><br>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- роли в спектакле -->
+        <div align="center"><h2>Роли</h2></div>
+        <table class="gran" align="center">
+            <th:block th:each="dt:${performance.list_roles}">
+                <tr>
+                    <td class="text5" th:text="${dt.name}"></td>
+                    <td class="text5" th:text="${dt.description}"></td>
+                </tr>
+            </th:block>
+        </table><br>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- описание -->
+        <div align="center"><h2>Описание</h2></div>
+        <div class="text4" th:text="${performance.description}"></div><br>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- фото -->
+        <div align="center"><h2>Фото</h2></div>
+        <table border="0" align="center">
+            <th:block th:if="${performance.image_str1 != null}">
+                <tr>
+                    <td align="center">
+                        <img th:src="'data:image/jpeg;base64,'+ ${performance.image_str1}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${performance.image_str2 != null}">
+                <tr>
+                    <td align="center">
+                        <img th:src="'data:image/jpeg;base64,'+ ${performance.image_str2}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${performance.image_str3 != null}">
+                <tr>
+                    <td align="center">
+                        <img th:src="'data:image/jpeg;base64,'+ ${performance.image_str3}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${performance.image_str4 != null}">
+                <tr>
+                    <td align="center">
+                        <img th:src="'data:image/jpeg;base64,'+ ${performance.image_str4}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${performance.image_str5 != null}">
+                <tr>
+                    <td align="center">
+                        <img th:src="'data:image/jpeg;base64,'+ ${performance.image_str5}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- оценки и отзывы -->
+        <div align="center"><h2>Оценки и отзывы</h2></div>
+        <table border="0" cellspacing="3" cellpadding="3" style="width: 100%;">
+            <th:block th:each="dt:${ratings}">
+                <tr>
+                    <td>
+                        <div style="border: 1px solid #8b8b8b; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                <tr>
+                                    <td class="text3" th:text="${dt.name_user}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_text}" title="Дата оценки"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2">
+                                        <hr class="hr1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text6" th:text="'Оценка: '+${dt.rating}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_time_poster}" title="Дата и время постановки"></td>
+                                </tr>
+                                <th:block th:unless="${#strings.isEmpty(dt.review)}">
+                                    <tr>
+                                        <!-- линиия -->
+                                        <td colspan="2"><hr class="hr1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text4" th:text="${dt.review}"></td>
+                                    </tr>
+                                </th:block>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="js/about_performance.js"></script>

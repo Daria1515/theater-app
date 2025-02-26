@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div style="margin: auto; width: 70%;">
+        <div align="center"><h1>ПОДРОБНОЕ ОПИСАНИЕ О ДОЛЖНОСТИ</h1></div>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <div align="center" class="text6" th:text="'Должность: '+${position.name}"></div>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <div align="center" class="text4" th:text="${position.description}"></div>
+    </div>
+</body>
+</html>

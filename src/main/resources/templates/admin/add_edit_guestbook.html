@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${guestbook.oper==1}">
+            <h1>Ответить</h1>
+        </th:block>
+        <th:block th:if="${guestbook.oper==2}">
+            <h1>Изменить ответ</h1>
+        </th:block>
+        <!-- данные по обращению -->
+        <table class="gran">
+            <tr>
+                <td class="text3">Дата обращения</td>
+                <td class="text5" th:text="${guestbook.date_question_text}"></td>
+            </tr>
+            <tr>
+                <td class="text3">Тема</td>
+                <td class="text5" th:text="${guestbook.title}"></td>
+            </tr>
+            <tr>
+                <td class="text3">Обращение</td>
+                <td class="text5" th:text="${guestbook.question}"></td>
+            </tr>
+        </table>
+        <!-- форма -->
+        <form action="#" th:action="@{/AddEditGuestbookController}" th:object="${data}" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${guestbook.id}" required>
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="answer" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="answer" id="answer" rows="10" cols="70" maxlength="1000" required>[[${guestbook.answer}]]</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <th:block th:if="${guestbook.oper==1}">
+                            <input type="submit" class="button1" value="Ответить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${guestbook.oper==2}">
+                            <input type="submit" class="button1" value="Изменить ответ" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

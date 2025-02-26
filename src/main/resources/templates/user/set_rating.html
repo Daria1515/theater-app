@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${oper == 1}">
+            <h1>ДОБАВИТЬ ОЦЕНКУ</h1>
+        </th:block>
+        <th:block th:unless="${oper == 1}">
+            <h1>ИЗМЕНИТЬ ОЦЕНКУ</h1>
+        </th:block>
+        <h2 th:text="${rating_poster.name_performance}"></h2>
+        <form action="#" th:action="@{/AddEditRatingPosterController}" th:object="${data}" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${rating_poster.id}" required>
+            <input type="hidden" name="id_poster" id="id_poster" th:value="${rating_poster.id_poster}" required>
+            <input type="hidden" name="oper" id="oper" th:value="${oper}" required>
+            <input type="hidden" name="list_text_positions" id="list_text_positions" th:value="${rating_poster.list_text_positions}" required>
+            <input type="hidden" name="list_text_roles" id="list_text_roles" th:value="${rating_poster.list_text_roles}" required>
+            <table border="0" cellspacing="0" cellpadding="0" style="width: 70%; text-align:center;">
+                <tr>
+                    <td>
+                        <!-- оценка по постановке -->
+                        <div style="border: 3px solid #8b8b8b; border-radius: 5px; padding: 3px; display: inline-block;">
+                            <table>
+                                <tr>
+                                    <td><h2>Оценка по постановке</h2></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="text-field_label" for="rating" style="font-size: 24px;">Оценка</label>
+                                        <select id="rating" name="rating" class="text-field_input" style="width: 150px;" required>
+                                            <th:block th:if="${rating_poster.rating == 1}">
+                                                <option value="1" selected>1</option>
+                                            </th:block>
+                                            <th:block th:unless="${rating_poster.rating == 1}">
+                                                <option value="1">1</option>
+                                            </th:block>
+                                            <th:block th:if="${rating_poster.rating == 2}">
+                                                <option value="2" selected>2</option>
+                                            </th:block>
+                                            <th:block th:unless="${rating_poster.rating == 2}">
+                                                <option value="2">2</option>
+                                            </th:block>
+                                            <th:block th:if="${rating_poster.rating == 3}">
+                                                <option value="3" selected>3</option>
+                                            </th:block>
+                                            <th:block th:unless="${rating_poster.rating == 3}">
+                                                <option value="3">3</option>
+                                            </th:block>
+                                            <th:block th:if="${rating_poster.rating == 4}">
+                                                <option value="4" selected>4</option>
+                                            </th:block>
+                                            <th:block th:unless="${rating_poster.rating == 4}">
+                                                <option value="4">4</option>
+                                            </th:block>
+                                            <th:block th:if="${rating_poster.rating == 5}">
+                                                <option value="5" selected>5</option>
+                                            </th:block>
+                                            <th:block th:unless="${rating_poster.rating == 5}">
+                                                <option value="5">5</option>
+                                            </th:block>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="text-field_label" for="review" style="font-size: 24px;">Отзыв</label>
+                                        <textarea class="text-field_text_area" name="review" id="review" rows="10" cols="70" maxlength="1000" style="width: 700px;">[[${rating_poster.review}]]</textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- оценки по должностям -->
+                        <div style="border: 3px solid #8b8b8b; border-radius: 5px; padding: 3px; display: inline-block;">
+                            <table>
+                                <tr>
+                                    <td><h2>Оценки по должностям</h2></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="gran">
+                                            <tr class="text2">
+                                                <td>Должность</td><td>ФИО</td><td>Оценка</td><td>Отзыв</td>
+                                            </tr>
+                                            <th:block th:each="dt,state:${rating_poster.list_positions}">
+                                                <tr>
+                                                    <!-- наименование должности -->
+                                                    <td class="text5" th:text="${dt.name_position}"></td>
+                                                    <!-- ФИО -->
+                                                    <th:block th:if="${theater == 1}">
+                                                        <td class="text5" th:text="${dt.name_person}" th:onclick="'ShowAboutWorkerTheater(\''+${dt.id_person}+'\');'" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                                                    </th:block>
+                                                    <th:block th:unless="${theater == 1}">
+                                                        <td class="text5" th:text="${dt.name_person}" th:onclick="ShowAboutSocialLink([[${dt.social_link}]]);" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                                                    </th:block>
+                                                    <!-- установка оценки -->
+                                                    <td>
+                                                        <select th:id="rating_position+${state.index}" class="text-field_input" style="width: 210px;">
+                                                            <th:block th:if="${dt.rating == 0}">
+                                                                <option value="0" selected>не установлен</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 0}">
+                                                                <option value="0">не установлен</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 1}">
+                                                                <option value="1" selected>1</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 1}">
+                                                                <option value="1">1</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 2}">
+                                                                <option value="2" selected>2</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 2}">
+                                                                <option value="2">2</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 3}">
+                                                                <option value="3" selected>3</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 3}">
+                                                                <option value="3">3</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 4}">
+                                                                <option value="4" selected>4</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 4}">
+                                                                <option value="4">4</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 5}">
+                                                                <option value="5" selected>5</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 5}">
+                                                                <option value="5">5</option>
+                                                            </th:block>
+                                                        </select>
+                                                    </td>
+                                                    <!-- отзыв -->
+                                                    <td>
+                                                        <textarea class="text-field_text_area" th:id="review_position+${state.index}" rows="10" cols="70" maxlength="1000" style="width: 300px; height: 100px;">[[${dt.review}]]</textarea>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- оценки по актерам -->
+                        <div style="border: 3px solid #8b8b8b; border-radius: 5px; padding: 3px; display: inline-block;">
+                            <table>
+                                <tr>
+                                    <td><h2>Оценки по актерам</h2></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="gran">
+                                            <tr class="text2">
+                                                <td>Роль</td><td>ФИО</td><td>Оценка</td><td>Отзыв</td>
+                                            </tr>
+                                            <th:block th:each="dt,state:${rating_poster.list_roles}">
+                                                <tr>
+                                                    <!-- наименование роли -->
+                                                    <td class="text5" th:text="${dt.name_position}"></td>
+                                                    <!-- ФИО -->
+                                                    <th:block th:if="${theater == 1}">
+                                                        <td class="text5" th:text="${dt.name_person}" th:onclick="'ShowAboutWorkerTheater(\''+${dt.id_person}+'\');'" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                                                    </th:block>
+                                                    <th:block th:unless="${theater == 1}">
+                                                        <td class="text5" th:text="${dt.name_person}" th:onclick="ShowAboutSocialLink([[${dt.social_link}]]);" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                                                    </th:block>
+                                                    <!-- установка оценки -->
+                                                    <td>
+                                                        <select th:id="rating_role+${state.index}" class="text-field_input" style="width: 210px;">
+                                                            <th:block th:if="${dt.rating == 0}">
+                                                                <option value="0" selected>не установлен</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 0}">
+                                                                <option value="0">не установлен</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 1}">
+                                                                <option value="1" selected>1</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 1}">
+                                                                <option value="1">1</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 2}">
+                                                                <option value="2" selected>2</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 2}">
+                                                                <option value="2">2</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 3}">
+                                                                <option value="3" selected>3</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 3}">
+                                                                <option value="3">3</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 4}">
+                                                                <option value="4" selected>4</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 4}">
+                                                                <option value="4">4</option>
+                                                            </th:block>
+                                                            <th:block th:if="${dt.rating == 5}">
+                                                                <option value="5" selected>5</option>
+                                                            </th:block>
+                                                            <th:block th:unless="${dt.rating == 5}">
+                                                                <option value="5">5</option>
+                                                            </th:block>
+                                                        </select>
+                                                    </td>
+                                                    <!-- отзыв -->
+                                                    <td>
+                                                        <textarea class="text-field_text_area" th:id="review_role+${state.index}" rows="10" cols="70" maxlength="1000" style="width: 300px; height: 100px;">[[${dt.review}]]</textarea>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <!-- кнопка сохранения -->
+                <tr>
+                    <td style="text-align: center;">
+                        <th:block th:if="${oper == 1}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:unless="${oper == 1}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<script type="text/javascript">
+    var ListPositions = [], ListRoles = [];
+    var Theater = [[${rating_poster.theater}]];
+    var IdPoster = [[${id_poster}]];
+    var SizePositions = [[${size_positions}]];
+    var SizeRoles = [[${size_roles}]];
+    var list = '[[${rating_poster.list_text_positions}]]';
+    list = list.replace(/&quot;/ig,'"');
+    ListPositions = JSON.parse(list);
+    list = '[[${rating_poster.list_text_roles}]]';
+    list = list.replace(/&quot;/ig,'"');
+    ListRoles = JSON.parse(list);
+</script>
+</html>
+<script type="text/javascript" src="js/user/set_rating.js"></script>

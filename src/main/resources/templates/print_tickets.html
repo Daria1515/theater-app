@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div id="content" style="padding-top: 30px; width: 70%; margin:0 auto;">
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+            <th:block th:each="dt:${tickets}">
+                <tr>
+                    <td>
+                        <div style="border: 2px solid #8b8b8b; border-radius: 5px; margin-bottom: 5px;">
+                            <table border="0" style="width: 100%; margin: 3px;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <!-- фото штрих кода -->
+                                    <td style="vertical-align: top; width: 190px;">
+                                        <img th:src="'data:image/jpeg;base64,'+ ${dt.image_str_number_code}" />
+                                    </td>
+                                    <!-- данные -->
+                                    <td style="vertical-align: top;">
+                                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; padding-left: 5px; padding-right: 5px;">
+                                            <tr>
+                                                <td class="text3" th:text="${dt.name_performance}"></td>
+                                                <td class="text6" align="right" th:text="${dt.date_time_start_poster}"></td>
+                                            </tr>
+                                            <tr>
+                                                <!-- линиия -->
+                                                <td colspan="2"><hr class="hr1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text6" th:text="'Ряд: '+${+dt.row}+', место: '+${dt.place}"></td>
+                                                <td class="text6" align="right" th:text="'Стоимость: '+${dt.price}+' руб.'"></td>
+                                            </tr>
+                                            <tr>
+                                                <!-- линиия -->
+                                                <td colspan="2"><hr class="hr1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text6" th:text="${dt.method_pay}"></td>
+                                                <td class="text6" align="right">Драматический театр "СТРЕЛА"</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>

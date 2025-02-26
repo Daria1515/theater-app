@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>НАСТРОЙКИ</h1>
+        <form action="#" th:action="@{/SaveSettingsController}" th:object="${data}" method="post" id="form_data">
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="password" style="font-size: 24px;">Пароль администратора</label>
+                        <input class="text-field_input" type="text" name="password" id="password" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${settings.password}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="number_rows" style="font-size: 24px;">Количество рядов в зале</label>
+                        <input class="text-field_input" type="number" name="number_rows" id="number_rows" style="font-size: 24px; width: 600px;" th:value="${settings.number_rows}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="number_places_row" style="font-size: 24px;">Количество мест в ряде</label>
+                        <input class="text-field_input" type="number" name="number_places_row" id="number_places_row" style="font-size: 24px; width: 600px;" th:value="${settings.number_places_row}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="number_rows_price" style="font-size: 24px;">Количество рядов для последующего изменения цены</label>
+                        <input class="text-field_input" type="number" name="number_rows_price" id="number_rows_price" style="font-size: 24px; width: 600px;" th:value="${settings.number_rows_price}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="percent_price" style="font-size: 24px;">Процент изменения цены билета</label>
+                        <input class="text-field_input" type="number" name="percent_price" id="percent_price" style="font-size: 24px; width: 600px;" th:value="${settings.percent_price}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

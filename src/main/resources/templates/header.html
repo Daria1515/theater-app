@@ -1,0 +1,146 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!--подключаем файл стилей-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+<script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+<div class="header" id="header">
+	<!--панель разделов-->
+	<div style="float: left; width: 100%;">
+		<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+			<tr>
+				<!-- лого -->
+				<td style="width: 155px;"><a href="/index"><img src="/images/logo.gif" style="display: block;" /></a></td>
+				<!-- текст театра -->
+				<td style="width: 1%; white-space: nowrap;">
+					<table border="0" cellspacing="7" cellpadding="0" style="margin-left: 5px;">
+						<tr><td class="text_name1">Драматический</td></tr>
+						<tr><td class="text_name1">театр "Стрела"</td></tr>
+						<tr><td class="text_name2">г. Жуковский</td></tr>
+					</table>
+				</td>
+				<!-- разделы меню -->
+				<td valign="middle">
+					<table border="0" cellspacing="0" cellpadding="5" align="center">
+						<tr>
+							<td id="poster" class="header_raz_text" onclick="GoRazdel(1);">
+								Афиша
+							</td>
+							<td id="performances" class="header_raz_text" onclick="GoRazdel(2);">
+								Спектакли
+							</td>
+							<td id="workers" class="header_raz_text" onclick="GoRazdel(3);">
+								Люди театра
+							</td>
+							<td class="header_raz_text" id="gallery" onclick="GoRazdel(4);">
+								Галерея
+							</td>
+							<td class="header_raz_text" id="news" onclick="GoRazdel(5);">
+								Новости
+							</td>
+							<td class="header_raz_text" id="guestbook" onclick="GoRazdel(6);">
+								Гостевая
+							</td>
+						</tr>
+					</table>
+					<!-- если посетитель -->
+					<th:block th:if="${#strings.isEmpty(user_status)}">
+						<table border="0" cellspacing="0" cellpadding="5" align="center">
+							<tr>
+								<td id="registration" class="header_raz_text" onclick="GoRazdel(7);">
+									Регистрация
+								</td>
+								<td id="sign_in" class="header_raz_text" onclick="GoRazdel(8);">
+									Вход
+								</td>
+							</tr>
+						</table>
+					</th:block>
+					<!-- если авторизованный пользователь  -->
+					<th:block th:unless="${#strings.isEmpty(user_status)}">
+						<!-- если пользователь -->
+						<th:block th:if="${#strings.equals(user_status,'User')}">
+							<table border="0" cellspacing="0" cellpadding="5" align="center">
+								<tr>
+									<td id="data" class="header_raz_text" onclick="GoRazdel(9);">
+										Личные данные
+									</td>
+									<td id="my_tickets" class="header_raz_text" onclick="GoRazdel(10);">
+										Мои билеты
+									</td>
+									<td id="sign_out" class="header_raz_text" onclick="GoRazdel(11);">
+										Выход
+									</td>
+								</tr>
+							</table>
+						</th:block>
+						<!-- если администратор -->
+						<th:block th:if="${#strings.equals(user_status,'Admin')}">
+							<table border="0" cellspacing="0" cellpadding="5" align="center">
+								<tr>
+									<td id="users" class="header_raz_text" onclick="GoRazdel(15);">
+										Пользователи
+									</td>
+									<td id="ratings" class="header_raz_text" onclick="GoRazdel(16);">
+										Отзывы
+									</td>
+									<td id="positions" class="header_raz_text" onclick="GoRazdel(12);">
+										Должности
+									</td>
+									<td id="settings" class="header_raz_text" onclick="GoRazdel(13);">
+										Настройки
+									</td>
+									<td id="statistics" class="header_raz_text" onclick="GoRazdel(14);">
+										Статистика
+									</td>
+									<td id="sign_out" class="header_raz_text" onclick="GoRazdel(11);">
+										Выход
+									</td>
+								</tr>
+							</table>
+					</th:block>
+				</td>
+				<!-- правый раздел с иконкой пользователя и его статусом -->
+				<td style="width: 100px; text-align: right;">
+					<!-- если посетитель -->
+					<th:block th:if="${#strings.isEmpty(user_status)}">
+						<img src="/images/theater.gif" style="height: 150px; display: block;" />
+					</th:block>
+					<!-- если авторизованный пользователь  -->
+					<th:block th:unless="${#strings.isEmpty(user_status)}">
+						<table border="0" cellspacing="0" cellpadding="0" style="padding-right: 5px; display: inline-table;">
+							<tr>
+								<!-- изображение -->
+								<td style="text-align: center;">
+									<img id="img_avatar" style="height: 80px; width: 80px; border-radius: 100px; border: 3px solid #e3e2e2;" src="" />
+								</td>
+							</tr>
+							<tr>
+								<!-- статус -->
+								<td id="status" class="text_avatar" style="text-align: center;"></td>
+							</tr>
+						</table>
+					</th:block>
+				</td>
+			</tr>
+			<!-- нижняя линия -->
+			<tr>
+				<td valign="bottom" colspan="100">
+					<hr size="3" color="#c3c294" style="margin: 0px;" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<!-- модальное окно ожидания обработки данных -->
+<div id="modal_wait" class="modal_wait">
+	<div align="center">
+		<table style="border: 0;">
+			<tr>
+				<td><img src="/images/wait.gif" /></td>
+				<td class="text10">Подождите, идет обработка данных...</td>
+			</tr>
+		</table></div>
+</div>
+<script type="text/javascript">
+	var NumberRazdel=[[${number_razdel}]];
+</script>
+<script type="text/javascript" src="js/header.js"></script>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /*модальное окно добавления или изменения должности*/
+        .modal_theater {
+            height: 150px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+    </style>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>АФИША</h1>
+        <!-- если авторизованный пользователь  -->
+        <th:block th:unless="${#strings.isEmpty(user_status)}">
+            <!-- если администратор -->
+            <th:block th:if="${#strings.equals(user_status,'Admin')}">
+                <button class="button1" onclick="ShowModalTheater();">Добавить</button><br><br>
+            </th:block>
+        </th:block>
+        <!-- панель условия поиска -->
+        <div style="border: 2px solid #c3c294; border-radius: 5px; margin-bottom: 5px; display: inline-block;">
+            <table border="0">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="view" style="font-size: 24px;">Вид</label>
+                        <select class="text-field_input" id="view" style="width: 350px;">
+                            <th:block th:if="${view==0}">
+                                <option th:value="0" selected>Все</option>
+                            </th:block>
+                            <th:block th:unless="${view==0}">
+                                <option th:value="0">Все</option>
+                            </th:block>
+                            <th:block th:if="${view==1}">
+                                <option th:value="1" selected>Взрослый</option>
+                            </th:block>
+                            <th:block th:unless="${view==1}">
+                                <option th:value="1">Взрослый</option>
+                            </th:block>
+                            <th:block th:if="${view==2}">
+                                <option th:value="2" selected>Детский</option>
+                            </th:block>
+                            <th:block th:unless="${view==2}">
+                                <option th:value="2">Детский</option>
+                            </th:block>
+                        </select>
+                    </td>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">Наименование спектакля</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${name}">
+                    </td>
+                    <td><button class="button1" onclick="Search();">Поиск</button></td>
+                </tr>
+            </table>
+        </div>
+        <!-- календарь постановок -->
+        <table border="0" cellspacing="3" cellpadding="3"><tr>
+            <th:block th:each="dt:${poster}">
+                <td style="vertical-align: top;">
+                    <div style="border: 1px solid #8b8b8b; border-radius: 5px; padding: 5px; width: 150px; cursor: pointer;" th:onclick="GetDataDayPoster([[${dt.date_mysql}]], [[${dt.id_day}]]);">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                            <tr>
+                                <td class="text_poster" th:text="${dt.date_text}" th:id="'date'+${dt.id_day}"></td>
+                            </tr>
+                            <tr>
+                                <!-- линиия -->
+                                <td><hr class="hr1"></td>
+                            </tr>
+                            <tr>
+                                <td class="text_poster" th:text="${dt.name_day}"></td>
+                            </tr>
+                            <tr>
+                                <!-- линиия -->
+                                <td><hr class="hr1"></td>
+                            </tr>
+                            <tr>
+                                <td class="text_poster" th:text="'Постановок: '+${dt.number_all_poster}"></td>
+                            </tr>
+                            <tr>
+                                <!-- линиия -->
+                                <td><hr class="hr1"></td>
+                            </tr>
+                            <th:block th:if="${dt.number_not_children_poster>0}">
+                                <tr>
+                                    <td class="text_poster" th:text="'Взрослых: '+${dt.number_not_children_poster}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td><hr class="hr1"></td>
+                                </tr>
+                            </th:block>
+                            <th:block th:if="${dt.number_children_poster>0}">
+                                <tr>
+                                    <td class="text_poster" th:text="'Детских: '+${dt.number_children_poster}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td><hr class="hr1"></td>
+                                </tr>
+                            </th:block>
+                        </table>
+                    </div>
+                </td>
+                <th:block th:if="${dt.new_stroke==1}" th:utext="'&lt;tr&gt;&lt;/tr&gt;'" />
+            </th:block>
+        </table>
+        <!-- панель сведений о постановках за выбранный день -->
+        <div align="center" style="width: 70%;">
+            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                <tr>
+                    <!-- линиия -->
+                    <td><hr size="3" color="#8b8b8b" style="margin: 0px;" /></td>
+                </tr>
+                <tr>
+                    <td align="center" class="text2">Постановки за день</td>
+                </tr>
+                <tr>
+                    <td id="name_day" style="font-size: 21px; color: black; font-family: Times New Roman;" align="center"></td>
+                </tr>
+                <tr>
+                    <td><div id="div_poster" style="width: 100%;"></div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<!-- модальное окно выбора постановки своего или нет театра -->
+<div id="modal_theater" class="modal_theater">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td class="text3">Выберите постановка какого театра</td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <select class="text-field_input" id="theater" style="width: 350px;">
+                    <option value="1">Свой театр</option>
+                    <option value="0">Приезжий театр</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><br><button id="button_add_edit_position" class="button2" type="button" onclick="Add();">Выбрать</button></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    var UserStatus = '[[${user_status}]]';
+    var SizePoster = [[${size_poster}]]
+</script>
+</html>
+<script type="text/javascript" src="js/poster.js"></script>

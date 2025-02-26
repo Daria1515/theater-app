@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>ДОБАВИТЬ ОБРАЩЕНИЕ</h1>
+        <form action="#" th:action="@{/AddGuestbookController}" th:object="${data}" method="post" id="form_data">
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="title" style="font-size: 24px;">Заголовок</label>
+                        <input class="text-field_input" type="text" name="title" id="title" style="font-size: 24px; width: 600px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="question" style="font-size: 24px;">Обращение</label>
+                        <textarea class="text-field_text_area" name="question" id="question" rows="10" cols="70" maxlength="1000" required></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${data.id==0}">
+            <h1>ДОБАВИТЬ СОТРУДНИКА</h1>
+        </th:block>
+        <th:block th:if="${data.id>0}">
+            <h1>ИЗМЕНИТЬ ДАННЫЕ ПО СОТРУДНИКУ</h1>
+        </th:block>
+        <form action="#" th:action="@{/AddEditWorkerController}" th:object="${data}" method="post" enctype="multipart/form-data" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${data.id}" required>
+            <input type="hidden" name="on_change_image" id="on_change_image" required>
+            <table border="0" style="margin: 0 auto; width: 500px;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="id_position" style="font-size: 24px;">Должность</label>
+                        <select class="text-field_input" name="id_position" id="id_position" required>
+                            <th:block th:each="dt:${positions}">
+                                <th:block th:if="${dt.id==data.id_position}">
+                                    <option th:value="${dt.id}" selected>[[${dt.name}]]</option>
+                                </th:block>
+                                <th:block th:unless="${dt.id==data.id_position}">
+                                    <option th:value="${dt.id}">[[${dt.name}]]</option>
+                                </th:block>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">ФИО</label>
+                        <input class="text-field_input" type="text" name="name" id="name" th:value="${data.name}" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="date_birth" style="font-size: 24px;">Дата рождения</label>
+                        <input class="text-field_input" type="date" name="date_birth" id="date_birth" th:value="${data.date_birth}" style="font-size: 24px;" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="social_link" style="font-size: 24px;">Ссылка на социальное медиа</label>
+                        <input class="text-field_input" type="text" name="social_link" id="social_link" th:value="${data.social_link}" maxlength="100">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="description" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="description" id="description" rows="10" cols="70" maxlength="5000" style="font-size: 24px;" required>[[${data.description}]]</textarea>
+                    </td>
+                </tr>
+                <!--Фото-->
+                <tr>
+                    <td>
+                        <table style="border: 0; ">
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image" name="image">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <th:block th:if="${data.id==0}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${data.id>0}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+    <th:block th:unless="${#strings.isEmpty(data.image_str)}">
+        <script type="text/javascript">
+            var image_str='data:image/png;base64,'+'[[${data.image_str}]]';
+            var image=document.getElementById('image_str');
+            image.src=image_str;
+        </script>
+    </th:block>
+</html>
+<script type="text/javascript" src="js/user/data.js"></script>

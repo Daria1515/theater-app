@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" style="padding-top: 200px; width: 70%; margin:0 auto;">
+        <div align="center">
+            <table border="0">
+                <tr>
+                    <!--TypeMessage: 1 - иконка предупреждения 2 - иконка сообщения-->
+                    <th:block th:if="${type_message==1}">
+                        <td><img src="/images/warning.gif" /></td>
+                    </th:block>
+                    <th:block th:if="${type_message==2}">
+                        <td><img src="/images/message.gif" /></td>
+                    </th:block>
+                    <td class="message" th:text="${message}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

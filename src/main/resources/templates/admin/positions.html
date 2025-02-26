@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>ДОЛЖНОСТИ</h1>
+        <button class="button1" onclick="Add();">Добавить</button><br><br>
+        <table class="gran">
+            <tr class="text2">
+                <td>Наименование</td><td>Описание</td>
+            </tr>
+            <th:block th:each="dt:${positions}">
+                <tr class="text1">
+                    <td th:text="${dt.name}"></td>
+                    <td th:text="${dt.description}" style="white-space: pre-line;"></td>
+                    <td><button class="button2" th:onclick="'Edit(\''+${dt.id}+'\');'">Изменить</button></td>
+                    <td><button class="button3" th:onclick="'Delete(\''+${dt.id}+'\');'">Удалить</button></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>
+<script type="text/javascript" src="js/admin/positions.js"></script>

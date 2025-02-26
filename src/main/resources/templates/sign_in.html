@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>АВТОРИЗАЦИЯ</h1>
+        <form action="#" th:action="@{/SignInUserController}" th:object="${data}" method="post" id="form_data">
+            <table border="0" style="margin: 0 auto; width: 500px;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="login" style="font-size: 24px;">Логин</label>
+                        <input class="text-field_input" type="text" name="login" id="login" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="password" style="font-size: 24px;">Пароль</label>
+                        <input class="text-field_input" type="password" name="password" id="password" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-top: 10px;">
+                        <input type="submit" class="button1" value="Авторизация" style="width: 200px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <a href="/oauth2/authorization/google"><img src="/images/google_icon.gif" style="width: 180px;" title="Авторизация через Google" /></a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${data.id == 0}">
+            <h1>ДОБАВИТЬ ДОЛЖНОСТЬ</h1>
+        </th:block>
+        <th:block th:if="${data.id > 0}">
+            <h1>ИЗМЕНИТЬ ДОЛЖНОСТЬ</h1>
+        </th:block>
+        <form action="#" th:action="@{/AddEditPositionController}" th:object="${data}" enctype="multipart/form-data" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${data.id}" required>
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">Наименование</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${data.name}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="description" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="description" id="description" rows="10" cols="70" maxlength="5000" style="font-size: 24px;" required>[[${data.description}]]</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <th:block th:if="${data.id == 0}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${data.id > 0}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>

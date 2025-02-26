@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>ОЦЕНКИ И ОТЗЫВЫ</h1>
+        <table border="0" cellspacing="3" cellpadding="3">
+            <tr>
+                <td class="text6">Тип</td>
+                <td>
+                    <select class="text-field_input" id="view" style="width: 350px;">
+                        <th:block th:if="${view==1}">
+                            <option th:value="1" selected>Постановки</option>
+                        </th:block>
+                        <th:block th:unless="${view==1}">
+                            <option th:value="1">Постановки</option>
+                        </th:block>
+                        <th:block th:if="${view==2}">
+                            <option th:value="2" selected>Сотрудники</option>
+                        </th:block>
+                        <th:block th:unless="${view==2}">
+                            <option th:value="2">Сотрудники</option>
+                        </th:block>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <!-- список отзывов -->
+        <table border="0" cellspacing="0" cellpadding="5" width="70%">
+            <th:block th:each="dt:${ratings}">
+                <tr>
+                    <td>
+                        <div style="border: 1px solid #8b8b8b; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                <tr>
+                                    <td class="text3" th:text="${dt.name_user}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_text}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text6" th:text="${dt.name_directory_performance}" title="Наименование постановки"></td>
+                                    <td class="text6" align="right" th:text="'Оценка: '+${dt.rating}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <th:block th:if="${view==2}">
+                                    <tr>
+                                        <td colspan="2" class="text6" th:text="'Сотрудник: '+${dt.name_actor}"></td>
+                                    </tr>
+                                    <tr>
+                                        <!-- линиия -->
+                                        <td colspan="2"><hr class="hr1"></td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:unless="${#strings.isEmpty(dt.review)}">
+                                    <tr>
+                                        <td colspan="2" class="text4" th:text="${dt.review}"></td>
+                                    </tr>
+                                    <tr>
+                                        <!-- линиия -->
+                                        <td colspan="2"><hr class="hr1"></td>
+                                    </tr>
+                                </th:block>
+                                <!-- кнопки -->
+                                <tr>
+                                    <td colspan="2" align="right">
+                                        <button class="button3" th:onclick="'Delete(\''+${dt.id}+'\');'">Удалить</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+    <!--устанавливаем разметку перехода по страницам-->
+    <th:block th:if="${not #lists.isEmpty(list_pages)}">
+        <th:block th:if="${#lists.size(list_pages[0].list_pages)>1}">
+            <table border="0" style="margin: 0 auto;">
+                <th:block th:each="row_pages:${list_pages}">
+                    <tr>
+                        <th:block th:each="dt:${row_pages.list_pages}">
+                            <th:block th:if="${dt.select==0}">
+                                <td class="text_number_page" th:text="${dt.number}" th:onclick="'GoPage(\''+${dt.number}+'\');'"></td>
+                            </th:block>
+                            <th:block th:if="${dt.select==1}">
+                                <td class="text_number_page_select" th:text="${dt.number}"></td>
+                            </th:block>
+                        </th:block>
+                    </tr>
+                </th:block>
+            </table>
+        </th:block>
+    </th:block>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<script type="text/javascript">
+    var View = [[${view}]];
+    var Page = [[${page}]]
+</script>
+</html>
+<script type="text/javascript" src="js/admin/ratings.js"></script>

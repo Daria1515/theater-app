@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+   <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div style="margin: auto; width: 70%;">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td class="text3" th:text="${news.title}"></td>
+                <td class="text6" th:text="${news.date_text}" align="right"></td>
+            </tr>
+            <tr>
+                <!-- линиия -->
+                <td colspan="2"><hr class="hr1"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text4" th:text="${news.description}"></td>
+            </tr>
+            <tr>
+                <!-- линиия -->
+                <td colspan="2"><hr class="hr1"></td>
+            </tr>
+            <th:block th:if="${news.image_str1 != null}">
+                <tr>
+                    <td align="center" colspan="2">
+                        <img th:src="'data:image/jpeg;base64,'+ ${news.image_str1}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${news.image_str2 != null}">
+                <tr>
+                    <td align="center" colspan="2">
+                        <img th:src="'data:image/jpeg;base64,'+ ${news.image_str2}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+            <th:block th:if="${news.image_str3 != null}">
+                <tr>
+                    <td align="center" colspan="2">
+                        <img th:src="'data:image/jpeg;base64,'+ ${news.image_str3}" alt="" style="border-radius: 10px;" />
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>

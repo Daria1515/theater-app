@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>ЛИЧНЫЕ ДАННЫЕ</h1>
+        <form action="#" th:action="@{/SaveDataController}" th:object="${data}" method="post" enctype="multipart/form-data" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${data.id}" required>
+            <input type="hidden" name="on_change_image" id="on_change_image" required>
+            <table border="0" style="margin: 0 auto; width: 500px;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">ФИО</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px;" th:value="${data.name}" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="date_birth" style="font-size: 24px;">Дата рождения</label>
+                        <input class="text-field_input" type="date" name="date_birth" id="date_birth" th:value="${data.date_birth}" style="font-size: 24px;" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="email" style="font-size: 24px;">Электронная почта</label>
+                        <input class="text-field_input" type="email" name="email" id="email" style="font-size: 24px;" th:value="${data.email}" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="login" style="font-size: 24px;">Логин</label>
+                        <input class="text-field_input" type="text" name="login" id="login" style="font-size: 24px;" th:value="${data.login}" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="password" style="font-size: 24px;">Пароль</label>
+                        <input class="text-field_input" type="password" name="password" id="password" style="font-size: 24px;" th:value="${data.password}" maxlength="100" required>
+                    </td>
+                </tr>
+                <!--Фото-->
+                <tr>
+                    <td>
+                        <table style="border: 0; ">
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image" name="image">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button2" onclick="DeleteImage();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-top: 10px;">
+                        <input type="submit" class="button1" value="Сохранить" style="width: 200px;" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+    <th:block th:unless="${#strings.isEmpty(data.image_str)}">
+        <script type="text/javascript">
+            var image_str='data:image/png;base64,'+'[[${data.image_str}]]';
+            var image=document.getElementById('image_str');
+            image.src=image_str;
+        </script>
+    </th:block>
+</body>
+</html>
+<script type="text/javascript" src="js/user/data.js"></script>

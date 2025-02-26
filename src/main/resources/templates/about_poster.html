@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div style="margin: auto; width: 70%;">
+        <div align="center"><h1>ПОДРОБНОЕ ОПИСАНИЕ О ПОСТАНОВКЕ</h1></div>
+        <!-- общая информация -->
+        <table class="gran" align="center">
+            <tr>
+                <td class="text3">Наименование постановки</td>
+                <td class="text5" th:text="${poster.name_performance}"></td>
+            </tr>
+            <tr>
+                <td class="text3">Дата и время</td>
+                <td class="text5" th:text="${poster.date_time}"></td>
+            </tr>
+            <tr>
+                <td class="text3">Длительность постановки</td>
+                <td class="text5" th:text="${poster.minutes}+' мин.'"></td>
+            </tr>
+            <tr>
+                <td class="text3">Цена билета</td>
+                <td class="text5" th:text="${poster.price_ticket}"></td>
+            </tr>
+            <tr>
+                <td class="text3">Осталось билетов</td>
+                <td class="text5" th:text="${poster.free_tickets}+' шт.'"></td>
+            </tr>
+            <tr>
+                <td class="text3">Постановка</td>
+                <th:block th:if="${poster.theater==1}">
+                    <td class="text5">Своего театра</td>
+                </th:block>
+                <th:block th:unless="${poster.theater==1}">
+                    <td class="text5" th:text="${poster.description}+' шт.'"></td>
+                </th:block>
+            </tr>
+        </table>
+        <!-- информация о спектакле -->
+        <div align="center"><h2>О содержании спектакля</h2></div>
+        <div class="text4" th:text="${poster.about_performance}"></div>
+        <hr class="hr1">
+        <!-- должности -->
+        <div align="center"><h2>Должности</h2></div>
+        <table class="gran" align="center">
+            <th:block th:each="dt:${poster.list_positions}">
+                <tr>
+                    <th:block th:if="${poster.theater==1}">
+                        <td class="text5" th:text="${dt.name_position}"></td>
+                        <td class="text5" th:text="'&nbsp;'+${dt.name_person}" th:onclick="'ShowAboutWorkerTheater(\''+${dt.id_person}+'\');'" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                    </th:block>
+                    <th:block th:unless="${poster.theater==1}">
+                        <td class="text5" th:text="${dt.name_position}"></td>
+                        <th:block th:if="${#strings.isEmpty(dt.social_link)}">
+                            <td class="text5" th:text="'&nbsp;'+${dt.name_person}"></td>
+                        </th:block>
+                        <th:block th:unless="${#strings.isEmpty(dt.social_link)}">
+                            <td class="text5" th:text="'&nbsp;'+${dt.name_person}" th:onclick="ShowAboutSocialLink([[${dt.social_link}]]);" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                        </th:block>
+                    </th:block>
+                </tr>
+            </th:block>
+        </table>
+        <hr class="hr1">
+        <!-- актеры -->
+        <div align="center"><h2>Актеры</h2></div>
+        <table class="gran" align="center">
+            <th:block th:each="dt:${poster.list_roles}">
+                <tr>
+                    <th:block th:if="${poster.theater==1}">
+                        <td class="text5" th:text="${dt.name_position}"></td>
+                        <td class="text5" th:text="'&nbsp;'+${dt.name_person}" th:onclick="'ShowAboutWorkerTheater(\''+${dt.id_person}+'\');'" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                    </th:block>
+                    <th:block th:unless="${poster.theater==1}">
+                        <td class="text5" th:text="${dt.name_position}"></td>
+                        <th:block th:if="${#strings.isEmpty(dt.social_link)}">
+                            <td class="text5" th:text="'&nbsp;'+${dt.name_person}"></td>
+                        </th:block>
+                        <th:block th:unless="${#strings.isEmpty(dt.social_link)}">
+                            <td class="text5" th:text="'&nbsp;'+${dt.name_person}" th:onclick="ShowAboutSocialLink([[${dt.social_link}]]);" style="cursor:pointer;" title="нажмите, что-бы узнать подробнее о человеке"></td>
+                        </th:block>
+                    </th:block>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="js/about_poster.js"></script>

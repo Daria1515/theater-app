@@ -1,0 +1,375 @@
+/*стиль шапки сайта*/
+.header{
+    position: absolute;
+    top: 0;left: 0;
+    background: #ffffff;
+    width: 100%;
+    height: 150px;
+    z-index: 1;
+}
+/*стиль подвала сайта*/
+.footer{
+    position: absolute;
+    left: 0;
+    background: #ffdcb7;
+    margin-top: 10px;
+    width: 100%;
+    height: 150px;
+}
+#shadow {
+    position: fixed;
+    width:100%;
+    height:100%;
+    z-index:1; /* поверх всех  кроме окна*/
+    background:#000;
+    opacity: 0.5; /*прозрачность*/
+    left:0;
+    top:0;
+}
+/*модальное окно ожидания обработки данных*/
+.modal_wait {
+    height: 60px;
+    width: 580px;
+    background: white;
+    top: 20%; /* отступ сверху */
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    z-index:2; /* поверх всех */
+    display: none;  /* сначала невидим */
+    position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #d8d8d8;
+}
+/*стиль поле ввода текста*/
+.text-field {
+  margin-bottom: 1rem;
+}
+.text-field_input::placeholder {
+  color: #212529;
+  opacity: 0.4;
+}
+.text-field_input:focus {/*стиль при наведении на поле ввода, обводит рамку*/
+  color: #212529;
+  background-color: #fff;
+  border-color: #339afe;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
+/* стили для label */
+.text-field_label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 24px;
+}
+/* стили для input */
+.text-field_input {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #bdbdbd;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+/* стили для input1 */
+.text-field_input1 {
+  display: block;
+  height: calc(2.25rem + 2px);
+  font-family: inherit;
+  font-size: 24px;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #bdbdbd;
+  border-radius: 0.25rem;
+}
+.text-field_input1:focus {/*стиль при наведении на поле ввода, обводит рамку*/
+  color: #212529;
+  background-color: #fff;
+  border-color: #339afe;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
+.text-field_input1::placeholder {
+  color: #212529;
+  opacity: 0.4;
+}
+/* стили для textarea */
+.text-field_text_area {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 400;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #bdbdbd;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.text-field_text_area:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #339afe;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
+/*стиль кнопки 1 (сохранение, добавление, изменение)*/
+.button1{
+    background-color: #f7b731;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 50px;
+    font-size: 24px;
+    font-family: Arial;
+}
+.button1:hover{
+    background-color: #c49023;
+}
+/*стиль кнопки 1 но меньшая (сохранение, добавление, изменение)*/
+.button2{
+    background-color: #f7b731;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    font-size: 18px;
+    font-family: Arial;
+}
+.button2:hover{
+    background-color: #c49023;
+}
+/*стиль кнопки удаления, но меньший по высоте*/
+.button3{
+    background-color: #041bfc;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    font-size: 18px;
+    font-family: Arial;
+}
+.button3:hover{
+    background-color: #3445e7;
+}
+/*стиль текста главных разделов шапки*/
+.header_raz_text{
+    padding-left: 30px;
+    font-size: 32px;
+    font-family: Arial;
+    cursor: pointer;
+    color: #1f0000;
+ }
+/*стиль текста наименования театра 1*/
+.text_name1{
+     font-size: 28px;
+     color: #777556;
+     text-align: center;
+     font-family: georgia;
+     font-weight: bold;
+}
+/*стиль текста наименования театра 2*/
+.text_name2{
+     font-size: 22px;
+     color: #777556;
+     text-align: center;
+     font-family: georgia;
+     font-weight: bold;
+}
+/*стиль текста информационного сообщения*/
+.message{
+    font-size: 28px;
+    color: #6b6a72;
+    text-align: justify;
+    font-family: Arial;
+    font-weight: bold;
+    padding-left: 10px;
+}
+/*стиль текста аватарки*/
+.text_avatar{
+    font-size: 16px;
+    font-family: Arial;
+    text-align: center;
+    color: #8b8b8b;
+}
+/*стиль текста ссылки*/
+.text_link{
+    font-size: 21px;
+    color: #092de2;
+    text-align: left;
+    font-family: Times New Roman;
+    cursor: pointer;
+}
+/*стиль обычного номера страницы*/
+.text_number_page{
+    font-size: 26px;
+    color: black;
+    text-align: center;
+    font-family: Times New Roman;
+    cursor: pointer;
+}
+/*стиль выбранного номера страницы*/
+.text_number_page_select{
+    font-size: 26px;
+    color: black;
+    text-align: center;
+    font-family: Times New Roman;
+    font-weight:bold;
+}
+/*стиль текста в календаре афиши, обычный*/
+.text_poster{
+      font-size: 18px;
+      color: black;
+      text-align: center;
+      font-family: Times New Roman;
+}
+/*стиль текста в календаре афиши, выделенный*/
+.text_poster_bold{
+      font-size: 18px;
+      color: black;
+      text-align: center;
+      font-family: Times New Roman;
+      font-weight: bold;
+}
+/*стиль обычного текста*/
+.text1{
+     font-size: 21px;
+     color: black;
+     text-align: justify;
+     font-family: Times New Roman;
+}
+/*стиль заголовка для таблиц*/
+.text2{
+      font-size: 21px;
+      color: black;
+      text-align: center;
+      font-family: Times New Roman;
+      font-weight: bold;
+}
+/*стиль жирного текста*/
+.text3{
+    font-size: 21px;
+    color: black;
+    text-align: left;
+    font-family: Times New Roman;
+    font-weight: bold;
+}
+/*стиль текста по ширине*/
+.text4{
+    font-size: 21px;
+    color: black;
+    text-align: justify;
+    font-family: Times New Roman;
+    white-space: pre-line;
+}
+.text5{
+     font-size: 21px;
+     color: black;
+     text-align: left;
+     font-family: Times New Roman;
+}
+.text6{
+     font-size: 21px;
+     color: black;
+     font-family: Times New Roman;
+}
+.text7{
+      font-size: 21px;
+      color: black;
+      text-align: center;
+      font-family: Times New Roman;
+}
+.text8{
+      font-size: 28px;
+      color: black;
+      text-align: left;
+      font-family: Times New Roman;
+}
+.text9{
+      font-size: 28px;
+      color: black;
+      text-align: left;
+      font-family: Times New Roman;
+      font-weight: bold;
+}
+/*стиль линии тонкой*/
+.hr1 {
+    display: block;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+}
+/*стиль линии жирной*/
+.hr2 {
+    display: block;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 3px;
+}
+/*стиль контура div*/
+.div1{
+    border: 1px solid #8b8b8b;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 3px;
+}
+/*рейтинг в виде звезд*/
+span.stars, span.stars span {
+    display: block;
+    background: url(/images/stars.png) 0 -30px repeat-x;
+    width: 150px;
+    height: 30px;
+}
+span.stars span {
+    background-position: 0 0;
+}
+/*эффект прозрачности*/
+.effect1{
+    cursor: pointer;
+}
+.effect1:hover{
+    opacity: 50%;
+}
+/*стиль таблицы*/
+table.gran {border-collapse: collapse;}
+.gran td{border: 1px solid; border-color:#6b6a72;}
+/*стиль div для свободного места*/
+.div_free_place{
+    border: 2px solid #04ee30;
+    border-radius: 3px;
+    cursor: pointer;
+}
+/*стиль div для свободного места, но купленного сейчас*/
+.div_free_place_buy{
+    border: 2px solid #030ffa;
+    border-radius: 3px;
+    cursor: pointer;
+}
+/*стиль div для не свободного места*/
+.div_not_free_place{
+    border: 2px solid #313436;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+

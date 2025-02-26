@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>СПЕКТАКЛИ</h1>
+        <!-- если авторизованный пользователь  -->
+        <th:block th:unless="${#strings.isEmpty(user_status)}">
+            <!-- если администратор -->
+            <th:block th:if="${#strings.equals(user_status,'Admin')}">
+                <button class="button1" onclick="Add();">Добавить</button><br><br>
+            </th:block>
+        </th:block>
+        <!-- панель условия поиска -->
+        <div style="border: 2px solid #c3c294; border-radius: 5px; margin-bottom: 5px; display: inline-block;">
+            <table border="0">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="view" style="font-size: 24px;">Вид</label>
+                        <select class="text-field_input" id="view" style="width: 350px;">
+                            <th:block th:if="${view==0}">
+                                <option th:value="0" selected>Все</option>
+                            </th:block>
+                            <th:block th:unless="${view==0}">
+                                <option th:value="0">Все</option>
+                            </th:block>
+                            <th:block th:if="${view==1}">
+                                <option th:value="1" selected>Взрослый</option>
+                            </th:block>
+                            <th:block th:unless="${view==1}">
+                                <option th:value="1">Взрослый</option>
+                            </th:block>
+                            <th:block th:if="${view==2}">
+                                <option th:value="2" selected>Детский</option>
+                            </th:block>
+                            <th:block th:unless="${view==2}">
+                                <option th:value="2">Детский</option>
+                            </th:block>
+                        </select>
+                    </td>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">Наименование</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${name}">
+                    </td>
+                    <td><button class="button1" onclick="Search();">Поиск</button></td>
+                </tr>
+            </table>
+        </div>
+        <!-- список спектаклей -->
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 70%;">
+            <th:block th:each="dt:${performances}">
+                <tr>
+                    <td>
+                        <div style="border: 2px solid #8b8b8b; border-radius: 5px; margin-bottom: 5px;">
+                            <table border="0" style="width: 100%; padding: 3px;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="text3" th:text="${dt.name}"></td>
+                                    <td>
+                                        <div style="float: right;" th:title="${dt.rating_text}">
+                                            <span class="stars" th:text="${dt.rating}"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="text5">
+                                        <th:block th:if="${dt.children==0}">Взрослый</th:block>
+                                        <th:block th:unless="${dt.children==0}">Детский</th:block>
+                                    </td>
+                                    <td align="right" class="text6" th:text="'от '+${dt.age}+' лет'"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text4" th:text="${dt.description}" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <!-- кнопки -->
+                                <tr>
+                                    <td align="right" colspan="2">
+                                        <!-- если авторизованный пользователь  -->
+                                        <th:block th:unless="${#strings.isEmpty(user_status)}">
+                                            <!-- если администратор -->
+                                            <th:block th:if="${#strings.equals(user_status,'Admin')}">
+                                                <button class="button3" th:onclick="'Delete(\''+${dt.id}+'\');'">Удалить</button>
+                                                <button class="button2" th:onclick="'Edit(\''+${dt.id}+'\');'">Изменить</button>
+                                            </th:block>
+                                        </th:block>
+                                        <button class="button2" th:onclick="'About(\''+${dt.id}+'\');'">Подробнее</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <!--устанавливаем разметку перехода по страницам-->
+        <th:block th:if="${not #lists.isEmpty(list_pages)}">
+            <th:block th:if="${#lists.size(list_pages[0].list_pages)>1}">
+                <table border="0" style="margin: 0 auto;">
+                    <th:block th:each="row_pages:${list_pages}">
+                        <tr>
+                            <th:block th:each="dt:${row_pages.list_pages}">
+                                <th:block th:if="${dt.select==0}">
+                                    <td class="text_number_page" th:text="${dt.number}" th:onclick="'GoPage(\''+${dt.number}+'\');'"></td>
+                                </th:block>
+                                <th:block th:if="${dt.select==1}">
+                                    <td class="text_number_page_select" th:text="${dt.number}"></td>
+                                </th:block>
+                            </th:block>
+                        </tr>
+                    </th:block>
+                </table>
+            </th:block>
+        </th:block>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>
+<script type="text/javascript">
+    var Page = [[${page}]];
+    //установка рейтинга в виде звезд
+    $(function() {
+        $('span.stars').stars();
+    });
+    $.fn.stars = function() {
+        return $(this).each(function() {
+            $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 30));
+        });
+    }
+</script>
+<script type="text/javascript" src="js/performances.js"></script>

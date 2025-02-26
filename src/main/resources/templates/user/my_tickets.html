@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>МОИ БИЛЕТЫ</h1>
+        <!-- панель условия поиска -->
+        <div style="border: 2px solid #c3c294; border-radius: 5px; margin-bottom: 5px; display: inline-block;">
+            <table border="0">
+                <tr>
+                    <td class="text5">Статус</td>
+                    <td>
+                        <select id="status_time" class="text-field_input">
+                            <th:block th:if="${status==0}">
+                                <option th:value="0" selected>Все</option>
+                            </th:block>
+                            <th:block th:unless="${status==0}">
+                                <option th:value="0">Все</option>
+                            </th:block>
+                            <th:block th:if="${status==1}">
+                                <option th:value="1" selected>Прошедшие</option>
+                            </th:block>
+                            <th:block th:unless="${status==1}">
+                                <option th:value="1">Прошедшие</option>
+                            </th:block>
+                            <th:block th:if="${status==2}">
+                                <option th:value="2" selected>Текущие</option>
+                            </th:block>
+                            <th:block th:unless="${status==2}">
+                                <option th:value="2">Текущие</option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- список билетов -->
+        <table border="0" cellspacing="5" cellpadding="0" style="width: 70%;">
+            <th:block th:each="dt:${tickets}">
+                <tr>
+                    <td>
+                        <div style="border: 2px solid #8b8b8b; border-radius: 5px; padding: 3px;">
+                            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                <tr>
+                                    <td class="text3" th:text="${dt.name_performance}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_time_start_poster}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text6" th:text="'ряд: '+${dt.row}+' место: '+${dt.place}"></td>
+                                    <td class="text6" align="right" th:text="${dt.price}+' руб.'"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text6" colspan="2" th:text="${dt.method_pay}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="right">
+                                        <th:block th:unless="${dt.flag_delete == 1}">
+                                            <button class="button2" th:onclick="'PrintTicket(\''+${dt.id}+'\');'">Распечатать билет</button>
+                                        </th:block>
+                                        <th:block th:if="${dt.flag_delete == 1}">
+                                            <button class="button2" th:onclick="'Delete(\''+${dt.id}+'\');'">Удалить</button>
+                                        </th:block>
+                                        <th:block th:if="${dt.flag_set_rating != 0}">
+                                            <th:block th:if="${dt.flag_set_rating == 1}">
+                                                <button class="button2" th:onclick="SetRating(1, [[${dt.id_poster}]]);">Добавить оценку</button>
+                                            </th:block>
+                                            <th:block th:unless="${dt.flag_set_rating == 1}">
+                                                <button class="button2" th:onclick="SetRating(2, [[${dt.id_poster}]]);">Изменить оценку</button>
+                                            </th:block>
+                                        </th:block>
+                                        <button class="button3" th:onclick="'AboutPerformance(\''+${dt.id_directory_performance}+'\');'">О спектакле</button>
+                                        <button class="button3" th:onclick="'AboutPoster(\''+${dt.id_poster}+'\');'">О постановке</button>
+                                    </td>
+                                </tr>
+                        </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+        <!--устанавливаем разметку перехода по страницам-->
+        <th:block th:if="${not #lists.isEmpty(list_pages)}">
+            <th:block th:if="${#lists.size(list_pages[0].list_pages)>1}">
+                <table border="0" style="margin: 0 auto;">
+                    <th:block th:each="row_pages:${list_pages}">
+                        <tr>
+                            <th:block th:each="dt:${row_pages.list_pages}">
+                                <th:block th:if="${dt.select==0}">
+                                    <td class="text_number_page" th:text="${dt.number}" th:onclick="'GoPage(\''+${dt.number}+'\');'"></td>
+                                </th:block>
+                                <th:block th:if="${dt.select==1}">
+                                    <td class="text_number_page_select" th:text="${dt.number}"></td>
+                                </th:block>
+                            </th:block>
+                        </tr>
+                    </th:block>
+                </table>
+            </th:block>
+        </th:block>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<script type="text/javascript">
+    var Page = [[${page}]];
+</script>
+</html>
+<script type="text/javascript" src="js/user/my_tickets.js"></script>

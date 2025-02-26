@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 150px; width: 100%;">
+        <table border="0" cellspacing="0" cellpadding="0" align="center" style="width: 70%;">
+            <tr>
+                <td class="text1">
+                    Здравствуйте! Вы попали на страничку  муниципального драматического театра "СТРЕЛА" для детей и взрослых города Жуковского Московской области.
+                    Если вы ещё совсем не знакомы с нашим театром - проходите, чувствуйте себя как дома; искренне надеемся, что путешествие по этому небольшому сайту
+                    вызовет у вас желание продолжить виртуальное знакомство в реальности. Милости просим, приходите на спектакли!
+                    Если же вы завсегдатай, старый знакомый или даже закадычный друг "СТРЕЛЫ" - считайте, что сайт наш создан специально для вас! Добро пожаловать!
+                </td>
+            </tr>
+            <tr>
+                <!-- линиия -->
+                <td><hr size="3" color="#c3c294" style="margin: 0px;" /><br></td>
+            </tr>
+            <!-- свежие анонсы -->
+            <tr>
+                <td class="text2">СВЕЖИЕ ПОСТАНОВКИ</td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                        <th:block th:each="dt:${poster}">
+                            <tr>
+                                <td>
+                                    <div style="border: 2px solid #8b8b8b; border-radius: 5px; margin-bottom: 5px; cursor: pointer;" onclick="ShowPoster();">
+                                        <table border="0" style="width: 100%; margin: 3px;" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <!-- фото -->
+                                                <td style="vertical-align: top; width: 200px;">
+                                                    <th:block th:if="${dt.image_str != null}">
+                                                        <img th:src="'data:image/jpeg;base64,'+ ${dt.image_str}" alt="" style="width: 200px; border-radius: 10px;" src="">
+                                                    </th:block>
+                                                    <th:block th:if="${dt.image_str == null}">
+                                                        <img src="/images/no_image.gif" style="width: 200px; border-radius: 10px;" alt="">
+                                                    </th:block>
+                                                </td>
+                                                <!-- данные -->
+                                                <td style="vertical-align: top;">
+                                                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; padding-left: 5px; padding-right: 5px;">
+                                                        <tr>
+                                                            <td class="text3" th:text="${dt.name_performance}"></td>
+                                                            <td class="text6" align="right" th:text="${dt.date_time}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <!-- линиия -->
+                                                            <td colspan="2"><hr class="hr1"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text4" th:text="${dt.about_performance}"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <!-- линиия -->
+                <td><hr size="3" color="#c3c294" style="margin: 0px;" /><br></td>
+            </tr>
+            <!-- последние новости -->
+            <tr>
+                <td class="text2">ПОСЛЕДНИЕ НОВОСТИ</td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                        <th:block th:each="dt:${news}">
+                            <tr>
+                                <td>
+                                    <div style="border: 2px solid #8b8b8b; border-radius: 5px; margin-bottom: 5px; cursor: pointer;" onclick="ShowNews();">
+                                        <table border="0" style="width: 100%; margin: 3px;" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <!-- фото -->
+                                                <td style="vertical-align: top; width: 200px;">
+                                                    <th:block th:if="${dt.image_str1 != null}">
+                                                        <img th:src="'data:image/jpeg;base64,'+ ${dt.image_str1}" alt="" style="width: 200px; border-radius: 10px;" src="">
+                                                    </th:block>
+                                                    <th:block th:if="${dt.image_str1 == null}">
+                                                        <img src="/images/no_image.gif" style="width: 200px; border-radius: 10px;" alt="">
+                                                    </th:block>
+                                                </td>
+                                                <!-- данные -->
+                                                <td style="vertical-align: top;">
+                                                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%; padding-left: 5px; padding-right: 5px;">
+                                                        <tr>
+                                                            <td class="text3" th:text="${dt.title}"></td>
+                                                            <td class="text6" align="right" th:text="${dt.date_text}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <!-- линиия -->
+                                                            <td colspan="2"><hr class="hr1"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text4" th:text="${dt.description}"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </td>
+            </tr>
+            <!-- контактные данные -->
+            <tr>
+                <!-- линиия -->
+                <td><hr size="3" color="#c3c294" style="margin: 0px;" /><br></td>
+            </tr>
+            <!-- последние новости -->
+            <tr>
+                <td class="text2">КОНТАКТЫ С НАМИ</td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                        <tr>
+                            <td>
+                                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1a3301d09a9440609784faac4737ad2875466a7f3be2b8e9d0c1ea94fa61a122&amp;width=500&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
+                            </td>
+                            <td style="vertical-align: top;">
+                                <table class="gran">
+                                    <tr>
+                                        <td class="text5">Адрес&nbsp;</td>
+                                        <td class="text5">140185, г.Жуковский МО, ул. Кирова, дом 3</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text5">Телефоны&nbsp;</td>
+                                        <td class="text5">+7(495) 556-57-72, +7(963) 657-03-06</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text5">Электронная почта&nbsp;</td>
+                                        <td class="text5">teatr_strela@mail.ru</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text5">Проезд&nbsp;</td>
+                                        <td class="text5">
+                                            по городу - маршруты № 1, 2, 6, 11, 13, 14, 17, 39<br>
+                                            от станции "Отдых" Казанской ж/д - маршрутные такси № 2, 6, 12, 17<br>
+                                            от м. Выхино -  маршрутные такси "Жуковский", "Раменское" от м. Котельники - автобусы № 424, 478, 525 до остановки "ПЛОЩАДЬ ГРОМОВА"
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center">
+                                            <a href="https://vk.com/teatrstrela?ysclid=m4n1om8e1q967569535" target="_blank" class="text_link">Мы ВКонтакте</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>
+<script type="text/javascript" src="js/index.js"></script>

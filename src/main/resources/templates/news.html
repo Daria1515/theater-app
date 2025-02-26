@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>НОВОСТИ</h1>
+        <!-- если авторизованный пользователь  -->
+        <th:block th:unless="${#strings.isEmpty(user_status)}">
+            <!-- если администратор -->
+            <th:block th:if="${#strings.equals(user_status,'Admin')}">
+                <button class="button1" onclick="Add();">Добавить</button>
+            </th:block>
+        </th:block>
+        <table border="0" cellspacing="0" cellpadding="5" width="70%">
+            <tr>
+                <td>
+                    <th:block th:each="dt:${news}">
+                        <div style="border: 1px solid #8b8b8b; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                <tr>
+                                    <td class="text3" th:text="${dt.title}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_text}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text4" th:text="${dt.description}"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2"><hr class="hr1"></td>
+                                </tr>
+                                <!-- кнопки -->
+                                <tr>
+                                    <td colspan="2" align="right">
+                                        <!-- если авторизованный пользователь  -->
+                                        <th:block th:unless="${#strings.isEmpty(user_status)}">
+                                            <!-- если администратор -->
+                                            <th:block th:if="${#strings.equals(user_status,'Admin')}">
+                                                <button class="button2" th:onclick="'Edit(\''+${dt.id}+'\');'">Изменить</button>
+                                                <button class="button3" th:onclick="'Delete(\''+${dt.id}+'\');'">Удалить</button>
+                                            </th:block>
+                                        </th:block>
+                                        <button class="button2" th:onclick="'About(\''+${dt.id}+'\');'">Подробнее</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </th:block>
+                </td>
+            </tr>
+        </table>
+        <!--устанавливаем разметку перехода по страницам-->
+        <th:block th:if="${not #lists.isEmpty(list_pages)}">
+            <th:block th:if="${#lists.size(list_pages[0].list_pages)>1}">
+                <table border="0" style="margin: 0 auto;">
+                    <th:block th:each="row_pages:${list_pages}">
+                        <tr>
+                            <th:block th:each="dt:${row_pages.list_pages}">
+                                <th:block th:if="${dt.select==0}">
+                                    <td class="text_number_page" th:text="${dt.number}" th:onclick="'GoPage(\''+${dt.number}+'\');'"></td>
+                                </th:block>
+                                <th:block th:if="${dt.select==1}">
+                                    <td class="text_number_page_select" th:text="${dt.number}"></td>
+                                </th:block>
+                            </th:block>
+                        </tr>
+                    </th:block>
+                </table>
+            </th:block>
+        </th:block>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<script type="text/javascript">
+    var Page = [[${page}]]
+</script>
+</html>
+<script type="text/javascript" src="js/news.js"></script>

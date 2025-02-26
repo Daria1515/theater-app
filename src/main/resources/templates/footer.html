@@ -1,0 +1,67 @@
+<div id="footer" class="footer" xmlns:th="http://www.w3.org/1999/xhtml">
+    <table border="0" style="margin: 0 auto; padding-top: 10px; border-spacing: 0;">
+        <tr>
+            <td>
+                <a href="https://www.teatral-online.ru/" target="_blank"><img style="height: 50px; border-radius: 10px;" title="Театральные новости, спектакли, покупка билетов" src="/images/banner1.png" /></a>
+            </td>
+            <td style="padding-left: 20px;">
+                <a href="https://journal.theater/" target="_blank"><img style="height: 50px; border-radius: 10px;" src="/images/banner2.gif" title="Театральные новости" /></a>
+            </td>
+            <td style="padding-left: 20px;">
+                <a href="https://rg.ru/tema/kultura/teatr?ysclid=m4n5482xfp726952839" target="_blank"><img style="height: 50px; border-radius: 10px;" src="/images/banner3.gif" title="Российская газета - театральные новости" /></a>
+            </td>
+            <td style="padding-left: 20px;">
+                <a href="https://bolshoi.ru/" target="_blank"><img style="height: 50px; border-radius: 10px;" src="/images/banner4.jpg" title="Большой театр страны" /></a>
+            </td>
+            <td style="padding-left: 20px;">
+                <a href="https://yandex.ru/project/yavteatre/theater_types_guide" target="_blank"><img style="height: 50px; border-radius: 10px;" src="/images/banner5.png" title="Путеводитель по театральной жизни" /></a>
+            </td>
+            <td style="padding-left: 20px;">
+                <a href="https://afisha.yandex.ru/moscow?utm_source=direct_search&utm_medium=paid_performance&utm_campaign=78063623%7CMSCAMP-60_%5BAF-PT%5D_%7BWS%3AS%7D_RU-225_goal-REV_Category-%D0%A2%D0%B5%D0%B0%D1%82%D1%80%D1%8B&utm_term=%D1%82%D0%B5%D0%B0%D1%82%D1%80&utm_content=INTid%7C0100000040886963513_40886963513%7Ccid%7C78063623%7Cgid%7C5014999070%7Caid%7C12674639213%7Cpos%7Cother1%7Csrc%7Csearch_none%7Cdvc%7Cdesktop%7Cevid%7C0%7Cdop1%7Cretid%7C0" target="_blank"><img style="height: 50px; border-radius: 10px;" src="/images/banner6.gif" title="Яндекс афиша" /></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <hr size="3" color="#c3c294" style="margin: 0px;" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <table style="border: 0; border-spacing: 0; border-collapse: collapse; margin: 0 auto;">
+                    <tr>
+                        <td>
+                            <img src="/images/logo_mini.gif" />
+                        </td>
+                        <td style="font-size: 18px; color: #120207; font-family: Times New Roman; vertical-align: top;">1984 Ⓒ ДРАМАТИЧЕСКИЙ ТЕАТР "СТРЕЛА" Г. ЖУКОВСКИЙ</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    //событие при окончании загрузки формы
+    $(window).on('load', function() {
+        SetFooter();
+    });
+    //событие при изменении размера окна
+    $(window).resize(function(){
+        SetFooter();
+    });
+    //установка положения подвала сайта
+    function SetFooter(){
+        var header=document.getElementById("header");
+        var footer=document.getElementById("footer");
+	    var content=document.getElementById("content");
+	    var header_h=header.offsetHeight;
+	    var content_h=content.offsetHeight;
+	    var footer_h=footer.offsetHeight;
+	    //var screen_h=document.documentElement.clientHeight;
+	    var screen_h = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+	    if(header_h+content_h+footer_h<=screen_h) footer.style.top=(screen_h-footer_h-10)+"px";
+    }
+</script>

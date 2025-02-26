@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /*модальное окно выбора способа оплаты*/
+        .modal_select_pay {
+            height: 245px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+        /*модальное окно ввода данных по карте*/
+        .modal_data_card {
+            height: 233px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+        /*модальное окно ввода данных по кошельку*/
+        .modal_data_ymoney {
+            height: 170px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+    </style>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 150px; width: 100%;">
+        <table border="0" style="width: 70%;" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="vertical-align: top; width: 300px;">
+                    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td colspan="2" align="center"><h1>КУПИТЬ БИЛЕТЫ</h1></td>
+                        </tr>
+                        <tr>
+                            <td class="text6" th:text="${name}"></td>
+                        </tr>
+                        <tr>
+                            <td class="text6" th:text="${date_time}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <!-- выбор мест -->
+                <td style="vertical-align: top;">
+                    <div id="div_places" style="width: 100%;" align="center"></div>
+                </td>
+                <!-- описание купленных билетов и кнопка купить -->
+                <td style="vertical-align: top; width: 300px;">
+                    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td class="text3">Купленные билеты</td>
+                        </tr>
+                        <tr>
+                            <td><div id="div_buy_tickets"></div></td>
+                        </tr>
+                        <!-- кнопка купить билет -->
+                        <tr>
+                            <td align="center"><button class="button1" style="width: 250px; display: none;" id="button_buy" onclick="OpenSelectMethodPay();">Купить</button></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<!-- модальное окно способа оплаты -->
+<div id="modal_select_pay" class="modal_select_pay">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td class="text3">Способ оплаты</td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+    </table>
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td style="width: 100px; cursor: pointer;" onclick="SelectMethodPay(1);"><img src="images/pay_card.gif" style="width: 100px;" /></td>
+            <td id="method_pay1" class="text8" style="cursor: pointer;" onclick="SelectMethodPay(1);">&nbsp;по карте</td>
+        </tr>
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td style="width: 100px; cursor: pointer;" onclick="SelectMethodPay(2);"><img src="images/pay_ymoney.gif" style="width: 100px; border-radius: 8px;" /></td>
+            <td id="method_pay2" class="text8" style="cursor: pointer;" onclick="SelectMethodPay(2);">&nbsp;кошелёк ЮMoney</td>
+        </tr>
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><button class="button2" onclick="OpenDataPay();">Далее</button></td>
+        </tr>
+    </table>
+</div>
+<!-- модальное окно ввода данных по карте -->
+<div id="modal_data_card" class="modal_data_card">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td class="text3">Данные по карте</td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <!-- номер карты -->
+        <tr>
+            <td colspan="2" class="text5">Номер карты</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="number_card" type="number" class="text-field_input" style="width: 335px;" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text5">Срок месяц/год</td><td class="text5">Код CVC</td>
+        </tr>
+        <tr>
+            <td>
+                <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            <select id="date_month_card" class="text-field_input" style="width: 100px;">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="date_year_card" class="text-field_input" style="width: 100px;">
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                                <option value="32">32</option>
+                                <option value="33">33</option>
+                                <option value="34">34</option>
+                                <option value="35">35</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input class="text-field_input" type="number" id="cvc_card" style="font-size: 24px; width: 100px;" max="999" />
+            </td>
+        </tr>
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><button class="button2" onclick="Pay();">Оплатить</button></td>
+        </tr>
+    </table>
+</div>
+<!-- модальное окно ввода данных по кошельку -->
+<div id="modal_data_ymoney" class="modal_data_ymoney">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td class="text3">Данные по кошельку</td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <!-- линиия -->
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <!-- номер кошелька -->
+        <tr>
+            <td colspan="2" class="text5">Номер</td>
+        </tr>
+        <tr>
+            <td>
+                <input id="number_ymoney" type="number" class="text-field_input" /><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><button class="button2" onclick="Pay();">Оплатить</button></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    var NumberRows = [[${number_rows}]];
+    var NumberPlacesRow = [[${number_places_row}]];
+    var ListTextPlaces = '[[${places}]]';
+    var IdPoster = [[${id_poster}]];
+    ListTextPlaces = ListTextPlaces.replace(/&quot;/ig,'"');
+</script>
+</html>
+<script type="text/javascript" src="js/buy_tickets.js"></script>

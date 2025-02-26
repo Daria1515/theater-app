@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--подключаем файл стилей-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script th:inline="javascript" src="js/jquery-3.6.4.min.js"></script>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <div style="margin: auto; width: 70%;">
+        <div align="center"><h1>ПОДРОБНОЕ ОПИСАНИЕ СОТРУДНИКА ТЕАТРА</h1></div>
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+            <tr>
+                <!-- изображение -->
+                <td style="width: 200px;">
+                    <th:block th:if="${worker.image_str != null}">
+                        <img th:src="'data:image/jpeg;base64,'+ ${worker.image_str}" alt="" style="width: 200px; border-radius: 10px;" src="">
+                    </th:block>
+                    <th:block th:if="${worker.image_str == null}">
+                        <img src="/images/no_image.gif" style="width: 200px; border-radius: 10px;" alt="">
+                    </th:block>
+                </td>
+                <!-- краткое описание -->
+                <td style="vertical-align: top; padding-left: 5px;">
+                    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                        <tr>
+                            <td class="text4" th:text="'ФИО: '+${worker.name}"></td>
+                        </tr>
+                        <tr>
+                            <!-- линиия -->
+                            <td><hr class="hr1"></td>
+                        </tr>
+                        <tr>
+                            <td class="text4" th:text="'Должность: '+${worker.name_position}"></td>
+                        </tr>
+                        <tr>
+                            <!-- линиия -->
+                            <td><hr class="hr1"></td>
+                        </tr>
+                        <tr>
+                            <td class="text4" th:text="'Дата рождения: '+${worker.date_birth_text}"></td>
+                        </tr>
+                        <tr>
+                            <!-- линиия -->
+                            <td><hr class="hr1"></td>
+                        </tr>
+                        <tr>
+                            <td class="text4" th:text="'Возраст: '+${worker.age}"></td>
+                        </tr>
+                        <tr>
+                            <!-- линиия -->
+                            <td><hr class="hr1"></td>
+                        </tr>
+                        <th:block th:unless="${#strings.isEmpty(worker.social_link)}">
+                            <tr>
+                                <td class="text_link" th:onclick="GoSocialMediaLink([[${worker.social_link}]]);">Ссылка на социальное медиа</td>
+                            </tr>
+                            <tr>
+                                <!-- линиия -->
+                                <td><hr class="hr1"></td>
+                            </tr>
+                        </th:block>
+                        <tr>
+                            <td class="text4" th:text="'Рейтинг: '+${worker.rating_text}"></td>
+                        </tr>
+                        <tr>
+                            <!-- линиия -->
+                            <td><hr class="hr1"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <div align="center"><h2>Описание</h2></div>
+        <!-- описание -->
+        <div class="text4" th:text="${worker.description}"></div>
+        <!-- толстая линия -->
+        <hr size="3" color="#c3c294" style="margin: 0px;" />
+        <!-- оценки и отзывы -->
+        <div align="center"><h2>Оценки и отзывы</h2></div>
+        <table border="0" cellspacing="3" cellpadding="3" style="width: 100%;">
+            <th:block th:each="dt:${ratings}">
+                <tr>
+                    <td>
+                        <div style="border: 1px solid #8b8b8b; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                            <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                <tr>
+                                    <td class="text3" th:text="${dt.name_user}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_text}" title="Дата оценки"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2">
+                                        <hr class="hr1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text6" th:text="${dt.name_directory_performance}"></td>
+                                    <td class="text6" align="right" th:text="${dt.date_time_poster}" title="Дата и время постановки"></td>
+                                </tr>
+                                <tr>
+                                    <!-- линиия -->
+                                    <td colspan="2">
+                                        <hr class="hr1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text6" th:text="'Оценка: '+${dt.rating}"></td>
+                                </tr>
+                                <th:block th:unless="${#strings.isEmpty(dt.review)}">
+                                    <tr>
+                                        <!-- линиия -->
+                                        <td colspan="2"><hr class="hr1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text4" th:text="${dt.review}"></td>
+                                    </tr>
+                                </th:block>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="js/about_worker.js"></script>

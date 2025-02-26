@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${news.id == 0}">
+            <h1>ДОБАВИТЬ НОВОСТЬ</h1>
+        </th:block>
+        <th:block th:if="${news.id > 0}">
+            <h1>ИЗМЕНИТЬ НОВОСТЬ</h1>
+        </th:block>
+        <form action="#" th:action="@{/AddEditNewsController}" th:object="${data}" enctype="multipart/form-data" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${news.id}" required>
+            <input type="hidden" name="on_change_image1" id="on_change_image1" required>
+            <input type="hidden" name="on_change_image2" id="on_change_image2" required>
+            <input type="hidden" name="on_change_image3" id="on_change_image3" required>
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="title" style="font-size: 24px;">Заголовок</label>
+                        <input class="text-field_input" type="text" name="title" id="title" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${news.title}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="description" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="description" id="description" rows="10" cols="70" maxlength="5000" required>[[${news.description}]]</textarea>
+                    </td>
+                </tr>
+                <!-- фото -->
+                <tr>
+                    <td>
+                        <table border="0">
+                            <tr>
+                                <!-- фото 1 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image1" name="image1">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str1" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage1();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 2 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image2" name="image2">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str2" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage2();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 3 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image3" name="image3">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str3" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage3();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <th:block th:if="${news.id == 0}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${news.id > 0}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<th:block th:unless="${#strings.isEmpty(news.image_str1)}">
+    <script type="text/javascript">
+        var image_str1='data:image/png;base64,'+'[[${news.image_str1}]]';
+        var image1=document.getElementById('image_str1');
+        image1.src=image_str1;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(news.image_str2)}">
+    <script type="text/javascript">
+        var image_str2='data:image/png;base64,'+'[[${news.image_str2}]]';
+        var image2=document.getElementById('image_str2');
+        image2.src=image_str2;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(news.image_str3)}">
+    <script type="text/javascript">
+        var image_str3='data:image/png;base64,'+'[[${news.image_str3}]]';
+        var image3=document.getElementById('image_str3');
+        image3.src=image_str3;
+    </script>
+</th:block>
+</html>
+<script type="text/javascript" src="js/admin/add_edit_news.js"></script>

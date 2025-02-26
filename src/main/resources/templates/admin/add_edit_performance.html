@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /*модальное окно добавления или изменения должности*/
+        .modal_add_edit_position {
+            height: 155px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+        /*модальное окно добавления или изменения роли*/
+        .modal_add_edit_role {
+            height: 490px;
+            width: 380px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+    </style>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${data.id == 0}">
+            <h1>ДОБАВИТЬ СПЕКТАКЛЬ</h1>
+        </th:block>
+        <th:block th:if="${data.id > 0}">
+            <h1>ИЗМЕНИТЬ СПЕКТАКЛЬ</h1>
+        </th:block>
+        <form action="#" th:action="@{/AddEditPerformanceController}" th:object="${data}" enctype="multipart/form-data" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${data.id}" required>
+            <input type="hidden" name="on_change_image1" id="on_change_image1" required>
+            <input type="hidden" name="on_change_image2" id="on_change_image2" required>
+            <input type="hidden" name="on_change_image3" id="on_change_image3" required>
+            <input type="hidden" name="on_change_image4" id="on_change_image4" required>
+            <input type="hidden" name="on_change_image5" id="on_change_image5" required>
+            <input type="hidden" name="list_text_positions" id="list_text_positions" required>
+            <input type="hidden" name="list_text_roles" id="list_text_roles" required>
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">Наименование</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px; width: 600px;" maxlength="100" th:value="${data.name}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="age" style="font-size: 24px;">Ограничение с какого возраста</label>
+                        <input class="text-field_input" type="number" name="age" id="age" style="font-size: 24px; width: 600px;" th:value="${data.age}" required>
+                    </td>
+                </tr>
+                <!-- должности -->
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="5" cellpadding="0" style="width: 100%;">
+                            <tr>
+                                <td class="text-field_label">Должности</td>
+                                <td align="right"><button class="button2" type="button" onclick="OpenModelPosition(-1)">Добавить</button></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="table_positions"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- роли -->
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="5" cellpadding="0" style="width: 100%;">
+                            <tr>
+                                <td class="text-field_label">Роли</td>
+                                <td align="right"><button class="button2" type="button" onclick="OpenModelRole(-1)">Добавить</button></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="table_roles"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- описание -->
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="description" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="description" id="description" rows="10" cols="70" maxlength="5000" required>[[${data.description}]]</textarea>
+                    </td>
+                </tr>
+                <!-- детский или взрослый -->
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="children" style="font-size: 24px;">Вид</label>
+                        <select id="children" name="children" class="text-field_input" required>
+                            <th:block th:if="${data.children==0}">
+                                <option th:value="0" selected>Взрослый</option>
+                            </th:block>
+                            <th:block th:unless="${data.children==0}">
+                                <option th:value="0">Взрослый</option>
+                            </th:block>
+                            <th:block th:if="${data.children==1}">
+                                <option th:value="1" selected>Детский</option>
+                            </th:block>
+                            <th:block th:unless="${data.children==1}">
+                                <option th:value="1">Детский</option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <!-- фото -->
+                <tr>
+                    <td>
+                        <table border="0">
+                            <tr>
+                                <!-- фото 1 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image1" name="image1">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str1" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage1();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 2 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image2" name="image2">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str2" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage2();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 3 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image3" name="image3">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str3" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage3();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 4 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image4" name="image4">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str4" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage4();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- фото 5 -->
+                                <td>
+                                    <table style="border: 0;">
+                                        <tr>
+                                            <td class="text-field_label" style="font-size: 24px;">Фото 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="file" id="image5" name="image5">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img id="image_str5" src="" style="width: 250px; border-radius: 10px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <button type="button" class="button3" onclick="DeleteImage5();">Удалить</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <th:block th:if="${data.id == 0}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${data.id > 0}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<!-- модальное окно добавление или изменение должности -->
+<div id="modal_add_edit_position" class="modal_add_edit_position">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td id="text_oper_position" class="text3"></td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text5">Должность</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <select class="text-field_input" id="select_position" style="width: 350px;">
+                    <th:block th:each="dt:${positions}">
+                        <option th:value="${dt.id}" selected>[[${dt.name}]]</option>
+                    </th:block>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><br><button id="button_add_edit_position" class="button2" type="button" onclick="AddEditPosition();"></button></td>
+        </tr>
+    </table>
+</div>
+<!-- модальное окно добавление или изменение роли -->
+<div id="modal_add_edit_role" class="modal_add_edit_role">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td id="text_oper_role" class="text3"></td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr class="hr1"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="text-field_label" for="name" style="font-size: 24px;">Роль</label>
+                <input class="text-field_input" type="text" name="role" id="role" style="width: 350px;" maxlength="100">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="text-field_label" for="description_role" style="font-size: 24px;">Описание</label>
+                <textarea class="text-field_text_area" name="description_role" id="description_role" rows="10" cols="50" style="width: 350px;" maxlength="1000"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2"><br><button id="button_add_edit_role" class="button2" type="button" onclick="AddEditRole();"></button></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript" src="js/admin/add_edit_performance.js"></script>
+<th:block th:if="${data.id > 0}">
+    <script type="text/javascript">
+        var text_positions = "[[${data.list_text_positions}]]";
+        text_positions = text_positions.replace(/&quot;/ig,'"');
+        ListPositions=JSON.parse(text_positions);
+        var text_roles = "[[${data.list_text_roles}]]";
+        text_roles = text_roles.replace(/&quot;/ig,'"');
+        ListRoles = JSON.parse(text_roles);
+        RepaintTablePositions();
+        RepaintTableRoles();
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(data.image_str1)}">
+    <script type="text/javascript">
+        var image_str1='data:image/png;base64,'+'[[${data.image_str1}]]';
+        var image1=document.getElementById('image_str1');
+        image1.src=image_str1;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(data.image_str2)}">
+    <script type="text/javascript">
+        var image_str2='data:image/png;base64,'+'[[${data.image_str2}]]';
+        var image2=document.getElementById('image_str2');
+        image2.src=image_str2;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(data.image_str3)}">
+    <script type="text/javascript">
+        var image_str3='data:image/png;base64,'+'[[${data.image_str3}]]';
+        var image3=document.getElementById('image_str3');
+        image3.src=image_str3;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(data.image_str4)}">
+    <script type="text/javascript">
+        var image_str4='data:image/png;base64,'+'[[${data.image_str4}]]';
+        var image4=document.getElementById('image_str4');
+        image4.src=image_str4;
+    </script>
+</th:block>
+<th:block th:unless="${#strings.isEmpty(data.image_str5)}">
+    <script type="text/javascript">
+        var image_str5='data:image/png;base64,'+'[[${data.image_str5}]]';
+        var image5=document.getElementById('image_str5');
+        image5.src=image_str5;
+    </script>
+</th:block>
+</html>

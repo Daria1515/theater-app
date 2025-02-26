@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /*модальное окно назначения на свою постановку*/
+        .modal_edit_my {
+            height: 140px;
+            width: 360px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+        /*модальное окно назначения на не свою постановку*/
+        .modal_edit_not_my {
+            height: 270px;
+            width: 375px;
+            background: white;
+            top: 20%; /* отступ сверху */
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            z-index:2; /* поверх всех */
+            display: none;  /* сначала невидим */
+            position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #d8d8d8;
+        }
+    </style>
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <th:block th:if="${poster.id == 0}">
+            <h1>ДОБАВИТЬ ПОСТАНОВКУ В РАСПИСАНИЕ</h1>
+        </th:block>
+        <th:block th:if="${poster.id > 0}">
+            <h1>ИЗМЕНИТЬ ПОСТАНОВКУ В РАСПИСАНИИ</h1>
+        </th:block>
+        <th:block th:if="${poster.theater == 1}">
+            <h2>СВОЙ ТЕАТР</h2>
+        </th:block>
+        <th:block th:unless="${poster.theater == 1}">
+            <h2>ПРИЕЗЖИЙ ТЕАТР</h2>
+        </th:block>
+        <form action="#" th:action="@{/AddEditPosterController}" th:object="${poster}" method="post" id="form_data">
+            <input type="hidden" name="id" id="id" th:value="${poster.id}" required>
+            <input type="hidden" name="theater" id="theater" th:value="${poster.theater}" required>
+            <input type="hidden" name="list_text_positions" id="list_text_positions" th:value="${poster.list_text_positions}" required>
+            <input type="hidden" name="list_text_roles" id="list_text_roles" th:value="${poster.list_text_roles}" required>
+            <table border="0" style="margin: 0 auto;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="id_directory_performance" style="font-size: 24px;">Постановка</label>
+                        <select class="text-field_input" name="id_directory_performance" id="id_directory_performance" required>
+                            <th:block th:each="dt:${performances}">
+                                <th:block th:if="${dt.id==poster.id_directory_performance}">
+                                    <option th:value="${dt.id}" selected>[[${dt.name}]]</option>
+                                </th:block>
+                                <th:block th:unless="${dt.id==poster.id_directory_performance}">
+                                    <option th:value="${dt.id}">[[${dt.name}]]</option>
+                                </th:block>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="date_time_local" style="font-size: 24px;">Дата и время</label>
+                        <input type="datetime-local" id="date_time_local" name="date_time_local" class="text-field_input" th:value="${poster.date_time_local}" required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="minutes" style="font-size: 24px;">Продолжительность в минутах</label>
+                        <input class="text-field_input" type="number" name="minutes" id="minutes" style="font-size: 24px; width: 600px;" th:value="${poster.minutes}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="price_max" style="font-size: 24px;">Максимальная цена билета на первый ряд</label>
+                        <input class="text-field_input" type="number" name="price_max" id="price_max" style="font-size: 24px; width: 600px;" th:value="${poster.price_max}" required>
+                    </td>
+                </tr>
+                <!-- должности -->
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="5" cellpadding="0" style="width: 100%;">
+                            <tr>
+                                <td class="text-field_label">Должности</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="table_positions"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- роли -->
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="5" cellpadding="0" style="width: 100%;">
+                            <tr>
+                                <td class="text-field_label">Роли</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="table_roles"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!-- описание -->
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="description" style="font-size: 24px;">Описание</label>
+                        <textarea class="text-field_text_area" name="description" id="description" rows="10" cols="70" maxlength="5000">[[${poster.description}]]</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <th:block th:if="${poster.id == 0}">
+                            <input type="submit" class="button1" value="Добавить" style="width: 200px;" />
+                        </th:block>
+                        <th:block th:if="${poster.id > 0}">
+                            <input type="submit" class="button1" value="Изменить" style="width: 200px;" />
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+<!-- модальное изменение должности или роли своей постановки -->
+<div id="modal_edit_my" class="modal_edit_my">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td id="text_oper_my" class="text3"></td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <select class="text-field_input" name="worker" id="worker" required>
+                    <th:block th:each="dt:${workers}">
+                        <option th:value="${dt.id}">[[${dt.name}]]</option>
+                    </th:block>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2"><br><button class="button2" type="button" onclick="SetData();">Изменить</button></td>
+        </tr>
+    </table>
+</div>
+<!-- модальное изменение должности или роли не своей постановки -->
+<div id="modal_edit_not_my" class="modal_edit_not_my">
+    <table border="0" style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td id="text_oper_not_my" class="text3"></td>
+            <td align="right"><img style="width: 30px; cursor: pointer;" class="effect1" title="Закрыть" src="images/close_icon.gif" onclick="CloseModal();" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="text-field_label" for="name_person" style="font-size: 24px;">ФИО</label>
+                <input class="text-field_input" type="text" name="name_person" id="name_person" style="width: 350px;" maxlength="100">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="text-field_label" for="social_link" style="font-size: 24px;">Ссылка на социальное медиа</label>
+                <input class="text-field_input" type="text" name="social_link" id="social_link" style="width: 350px;" maxlength="100">
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2"><br><button class="button2" type="button" onclick="SetData();">Изменить</button></td>
+        </tr>
+    </table>
+</div>
+</html>
+<script type="text/javascript">
+    var Theater = [[${poster.theater}]];
+    var IdPoster = [[${poster.id}]];
+    if(IdPoster > 0){
+        var ListTextPositions = '[[${poster.list_text_positions}]]';
+        ListTextPositions = ListTextPositions.replace(/&quot;/ig,'"');
+        var ListTextRoles = '[[${poster.list_text_roles}]]';
+        ListTextRoles = ListTextRoles.replace(/&quot;/ig,'"');
+    }
+</script>
+<script type="text/javascript" src="js/admin/add_edit_poster.js"></script>

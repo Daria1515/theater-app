@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>СТАТИСТИКА</h1>
+        <table class="gran" cellspacing="0" cellpadding="5">
+            <tr>
+                <td class="text5">Вид</td>
+                <td class="text5">За весь период</td>
+                <td class="text5">Дата начала</td>
+                <td class="text5">Дата конца</td>
+                <td rowspan="2"><button class="button1" onclick="Analysis();">Анализ</button></td>
+            </tr>
+            <tr>
+                <td>
+                    <select class="text-field_input" id="view" style="width: 250px;">
+                        <th:block th:if="${view==1}">
+                            <option th:value="1" selected>По количеству покупаемых билетов на спектакли</option>
+                        </th:block>
+                        <th:block th:unless="${view==1}">
+                            <option th:value="1">По количеству покупаемых билетов на спектакли</option>
+                        </th:block>
+                        <th:block th:if="${view==2}">
+                            <option th:value="2" selected>По оценочному рейтингу на спектакли</option>
+                        </th:block>
+                        <th:block th:unless="${view==2}">
+                            <option th:value="2">По оценочному рейтингу на спектакли</option>
+                        </th:block>
+                        <th:block th:if="${view==3}">
+                            <option th:value="3" selected>По оценочному рейтингу актеров</option>
+                        </th:block>
+                        <th:block th:unless="${view==3}">
+                            <option th:value="3">По оценочному рейтингу актеров</option>
+                        </th:block>
+                    </select>
+                </td>
+                <td>
+                    <input type="checkbox" id="flag_all" class="text-field_input" th:checked="${flag_all}" />
+                </td>
+                <td>
+                    <input type="date" id="date_start" class="text-field_input1" th:value="${date_start}" />
+                </td>
+                <td>
+                    <input type="date" id="date_end" class="text-field_input1" th:value="${date_end}" />
+                </td>
+            </tr>
+        </table>
+        <div align="center" style="width: 100%;" id="print-div">
+            <h2 th:text="${text_view}"></h2>
+            <table class="gran">
+                <tr>
+                    <th:block th:if="${view==1}">
+                        <td class="text2">&nbsp;Спектакль&nbsp;</td>
+                        <td class="text2">&nbsp;Количество билетов&nbsp;</td>
+                        <td class="text2">&nbsp;Процент от 100%&nbsp;</td>
+                    </th:block>
+                    <th:block th:if="${view==2}">
+                        <td class="text2">&nbsp;Спектакль&nbsp;</td>
+                        <td class="text2">&nbsp;Количество оценок&nbsp;</td>
+                        <td class="text2">&nbsp;Общий рейтинг от 5&nbsp;</td>
+                    </th:block>
+                    <th:block th:if="${view==3}">
+                        <td class="text2">&nbsp;Сотрудник&nbsp;</td>
+                        <td class="text2">&nbsp;Количество оценок&nbsp;</td>
+                        <td class="text2">&nbsp;Общий рейтинг от 5&nbsp;</td>
+                    </th:block>
+                </tr>
+                <th:block th:each="dt:${statistics}">
+                    <tr>
+                        <td class="text6" th:text="${dt.name}"></td>
+                        <td class="text7" th:text="${dt.number}"></td>
+                        <td class="text7" th:text="${dt.percent_text}"></td>
+                    </tr>
+                </th:block>
+            </table>
+        </div><br>
+        <button class="button1" onclick="Print('#print-div');">Печать</button>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>
+<script type="text/javascript" src="js/admin/statistics.js"></script>

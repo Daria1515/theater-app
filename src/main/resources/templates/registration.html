@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--для нормального отображения на мобильных устройствах-->
+    <meta name="viewport" content="width=device-width, initial-scale=0" />
+    <title>Драматический театр "Стрела"</title>
+</head>
+<body bgcolor="#ffffff">
+    <!--подключаем шапку-->
+    <div th:insert="header"></div>
+    <div id="content" align="center" style="padding-top: 130px; width: 100%;">
+        <h1>РЕГИСТРАЦИЯ</h1>
+        <form action="#" th:action="@{/RegistrationUserController}" th:object="${data}" method="post" id="form_data">
+            <table border="0" style="margin: 0 auto; width: 500px;">
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="name" style="font-size: 24px;">ФИО</label>
+                        <input class="text-field_input" type="text" name="name" id="name" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="date_birth" style="font-size: 24px;">Дата рождения</label>
+                        <input class="text-field_input" type="date" name="date_birth" id="date_birth" style="font-size: 24px;" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="email" style="font-size: 24px;">Электронная почта</label>
+                        <input class="text-field_input" type="email" name="email" id="email" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="login" style="font-size: 24px;">Логин</label>
+                        <input class="text-field_input" type="text" name="login" id="login" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="password" style="font-size: 24px;">Пароль</label>
+                        <input class="text-field_input" type="password" name="password" id="password" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="text-field_label" for="repeat_password" style="font-size: 24px;">Повторите пароль</label>
+                        <input class="text-field_input" type="password" name="repeat_password" id="repeat_password" style="font-size: 24px;" maxlength="100" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-top: 10px;">
+                        <input type="submit" class="button1" value="Регистрация" style="width: 200px;" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <!-- регистрация через соцсети -->
+        <table border="0" style="width: 300px;">
+            <tr align="center">
+                <td>
+                    <a href="/oauth2/authorization/google"><img src="/images/google_icon.gif" style="width: 180px;" title="Регистрация через Google" /></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--подключаем подвал-->
+    <div th:insert="footer"></div>
+</body>
+</html>
